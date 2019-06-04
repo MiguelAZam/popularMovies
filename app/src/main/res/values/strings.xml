@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_popular_name">Popular Movies</string>
+    <string name="app_rated_name">Highest Rated Movies</string>
+    <string name="app_favorite_name">Your Favorite Movies</string>
+
+    <string name="no_internet_error">No internet connection :(</string>
+    <string name="server_error">There was an error with the server</string>
+    <string name="sharing_error">Error trying to share this video</string>
+    <string name="added_to_database">Added to favorites</string>
+    <string name="deleted_from_database">Deleted from favorites</string>
+
+    <string name="release_date_placeholder">Release Date:</string>
+    <string name="overview_placeholder">Overview:</string>
+    <string name="favorites_placeholder">Add to Favorites</string>
+    <string name="movie_poster_description">Movie Poster</string>
+    <string name="reviewer_placeholder">reviewer placeholder</string>
+    <string name="reviews_placeholder">Reviews</string>
+    <string name="play_button">play_button</string>
+    <string name="video_share_botton">vide_share_botton</string>
+</resources>
