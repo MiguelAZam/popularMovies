@@ -16,8 +16,6 @@ public class Movie implements Serializable{
     private String vote_average;
     private String release_date;
 
-    private String COMPLETE_PATH="http://image.tmdb.org/t/p/w185";
-
     public Movie(int id, String poster_path, String original_title, String overview, String vote_average, String release_date){
         this.id = id;
         this.poster_path = poster_path;
@@ -31,7 +29,7 @@ public class Movie implements Serializable{
         return this.id;
     }
 
-    public String completePosterPath() { return COMPLETE_PATH + poster_path; }
+    public String completePosterPath() { return "http://image.tmdb.org/t/p/w185" + poster_path; }
 
     public String getPoster_path(){
         return poster_path;
