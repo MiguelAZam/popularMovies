@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.android.popularmovies.MovieDetails;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.models.Movie;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,14 +33,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     class MovieViewHolder extends RecyclerView.ViewHolder{
         CardView card;
         TextView title;
-        ImageView thumbnail;
-        int movieID;
+        ImageView iv_poster;
 
         MovieViewHolder(View view){
             super(view);
             card = view.findViewById(R.id.card_view);
             title = view.findViewById(R.id.title);
-            thumbnail = view.findViewById(R.id.thumbnail);
+            iv_poster = view.findViewById(R.id.iv_main_poster);
         }
     }
 
@@ -57,12 +57,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         //Get movie of the corresponding position
         final Movie movie = movieList.get(position);
-        //Get movieID so that we can retrieve details
-        holder.movieID = movie.getId();
-        Picasso.get()
+
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.notfound).fitCenter();
+
+        Glide.with(mContext)
                 .load(movie.completePosterPath())
-                .placeholder(R.drawable.notfound)
-                .into(holder.thumbnail);
+                .apply(options)
+                .into(holder.iv_poster);
 
         //Creation of a click/tap listener to redirect to the second activity (Details screen)
         holder.card.setOnClickListener(view -> {
