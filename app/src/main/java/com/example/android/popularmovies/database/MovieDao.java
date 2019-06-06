@@ -19,8 +19,8 @@ public interface MovieDao {
     LiveData<List<Movie>> loadFavoriteMovies();
 
     //Obtain favorite movie identified by id
-    @Query("SELECT * FROM Favorite WHERE id LIKE :id")
-    List<Movie> getMovie(String id);
+    @Query("SELECT EXISTS(SELECT * FROM Favorite WHERE id LIKE :id)")
+    Boolean movieExist(String id);
 
     //Insert movie in the table
     @Insert

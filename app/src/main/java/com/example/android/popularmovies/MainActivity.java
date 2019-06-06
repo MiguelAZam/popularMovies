@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     ProgressBar mProgressBar;
 
+    private static MovieViewModel movieViewModel;
+
     //Variable to save the actual movies shown in the app
     private static List<Movie> moviesState;
 
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recyclerview);
         mProgressBar = findViewById(R.id.pb_fetching);
+
+        setDatabaseObserver();
 
         //Check if instance state was created and restore it -
         if(savedInstanceState != null){
@@ -86,6 +90,16 @@ public class MainActivity extends AppCompatActivity {
         mProgressBar.setVisibility(state);
     }
 
+    public void setDatabaseObserver(){
+        movieViewModel = new MovieViewModel(getApplication());
+        movieViewModel.getFavoriteMovies().observe(this, movies -> {
+            String title = getTitle().toString();
+            if(title.equals(getResources().getString(R.string.app_favorite_name))){
+                setRecyclerView(movies);
+            }
+        });
+    }
+
     //Method to make network work in the background with Retrofit library
     //and populate UI
     public void enqueueCall(Call<MovieResults> call){
@@ -113,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Method to calculate the best number of cards per row in activity
     private int calculateBestSpanCount(){
         int cardWidth = (int) getResources().getDimension(R.dimen.card_width);
         Display display = getWindowManager().getDefaultDisplay();
@@ -148,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        mRecyclerView.setVisibility(View.INVISIBLE);
 
         //Get id of item selected
         int id = item.getItemId();
@@ -176,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         //is not required to call the api again
         //Otherwise, the selected item is different and an api call is required
         if(!actualTitle.equals(newTitle)) {
+            mRecyclerView.setVisibility(View.INVISIBLE);
             if(hasInternet() && id == R.id.action_most_popular){
                 //Get popular movies
                 enqueueCall(Caller.getPopularMovies());
@@ -184,8 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 enqueueCall(Caller.getTopRatedMovies());
             } else if(id == R.id.action_favorite){
                 //Get favorite movies in the database
-                MovieViewModel movieViewModel = new MovieViewModel(getApplication());
-                movieViewModel.getFavoriteMovies().observe(this, movies -> setRecyclerView(movies));
+                setRecyclerView(movieViewModel.getFavoriteMovies().getValue());
             }
             return true;
         }

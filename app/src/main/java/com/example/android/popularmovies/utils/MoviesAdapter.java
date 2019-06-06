@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.android.popularmovies.MovieDetails;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.database.FavoriteRepository;
 import com.example.android.popularmovies.models.Movie;
 
 import java.util.List;
@@ -70,6 +71,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             Intent intent = new Intent(mContext, MovieDetails.class);
             //Send the movie id to the second activity
             intent.putExtra("Movie", movie);
+            intent.putExtra("Favorite",FavoriteRepository.isFavorite(movie).booleanValue());
             mContext.startActivity(intent);
         });
 

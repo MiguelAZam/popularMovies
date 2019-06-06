@@ -2,15 +2,12 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -18,11 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.android.popularmovies.api.Caller;
 import com.example.android.popularmovies.database.MovieViewModel;
 import com.example.android.popularmovies.models.Movie;
@@ -40,8 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieDetails extends AppCompatActivity {
-
-    private static MovieViewModel viewModel;
 
     TextView tv_movie_title;
     ImageView iv_movie_poster;
@@ -76,7 +67,8 @@ public class MovieDetails extends AppCompatActivity {
         //Get Movie Object
         Intent intent = getIntent();
         selectedMovie = (Movie) intent.getSerializableExtra("Movie");
-        populateMovieDetails(selectedMovie);
+        boolean isFavorite = intent.getBooleanExtra("Favorite", false);
+        populateMovieDetails(selectedMovie, isFavorite);
         String id = Integer.toString(selectedMovie.getId());
 
         //If internet, get reviews and videos, otherwise notify user that there is
@@ -104,7 +96,7 @@ public class MovieDetails extends AppCompatActivity {
     //Method to populate the movie details, check if movie
     //is in the favorite database and add onclick listener
     //to the checkbox
-    public void populateMovieDetails(Movie movie){
+    public void populateMovieDetails(Movie movie, boolean isFavorite){
         //Populate UI with movie details passed through intent
         tv_movie_title.setText(movie.getOriginal_title());
 
@@ -119,10 +111,7 @@ public class MovieDetails extends AppCompatActivity {
         tv_movie_overview.setText(movie.getOverview());
 
         //Check if movie is in favorites
-        viewModel = new MovieViewModel(getApplication());
-        if(viewModel.isFavorite(movie)){
-            cb_favorite.setChecked(true);
-        }
+        cb_favorite.setChecked(isFavorite);
 
         //Add check listener to insert / delete movie from database
         addListenerOnCheckFavorites();
@@ -194,6 +183,7 @@ public class MovieDetails extends AppCompatActivity {
     public void addListenerOnCheckFavorites(){
 
         cb_favorite.setOnClickListener(view -> {
+            MovieViewModel viewModel = new MovieViewModel(getApplication());
             if(((CheckBox) view).isChecked()){
                 //if checkbox is checked, insert movie in the favorite table and notify user
                 viewModel.insertMovie(selectedMovie);

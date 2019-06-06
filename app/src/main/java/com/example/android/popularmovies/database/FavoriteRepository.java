@@ -29,25 +29,19 @@ public class FavoriteRepository {
     }
 
     //Check if movie identified by id is in the table
-    public static boolean getMovie(final Movie movie){
+    public static Boolean isFavorite(Movie movie){
         AsyncTask<Movie, Void, Boolean> result = new AsyncTask<Movie, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Movie... movies) {
                 String id = Integer.toString(movie.getId());
                 //Look for movie
-                List<Movie> result = mMovieDao.getMovie(id);
-                //if Favorite table has the movie return true
-                if(result.size() == 1){
-                    return true;
-                }
-                //Otherwise, false
-                return false;
+                return mMovieDao.movieExist(id);
             }
         };
 
         try{
-            return result.execute(movie).get().booleanValue();
+            return result.execute(movie).get();
         } catch(Exception e){
             return false;
         }

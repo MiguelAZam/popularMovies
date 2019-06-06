@@ -23,10 +23,6 @@ public class MovieViewModel extends AndroidViewModel {
         return favoriteMovies;
     }
 
-    public boolean isFavorite(Movie movie){
-        return movieFav.getMovie(movie);
-    }
-
     public void insertMovie(Movie movie){
         movieFav.insert(movie);
     }
