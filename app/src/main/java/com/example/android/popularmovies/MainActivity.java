@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,6 +113,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private int calculateBestSpanCount(){
+        int cardWidth = (int) getResources().getDimension(R.dimen.card_width);
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float screenWidth = outMetrics.widthPixels;
+        return Math.round(screenWidth/cardWidth);
+    }
+
     //Method to show Recycler View of movies
     public void setRecyclerView(List<Movie> movies){
         if(movies != null){
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             moviesState = movies;
             //Create adapter and layout manager
             MoviesAdapter adapter = new MoviesAdapter(this, movies);
-            RecyclerView.LayoutManager mLayout = new GridLayoutManager(this, 2);
+            RecyclerView.LayoutManager mLayout = new GridLayoutManager(this, calculateBestSpanCount());
 
             //Populate recycler view
             mRecyclerView.setLayoutManager(mLayout);
