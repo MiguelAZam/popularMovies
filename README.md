@@ -1,5 +1,11 @@
 # Popular Movies
 
+## Instructions
+
+- Go to [Caller.java](https://github.com/MiguelAZam/popularMovies/blob/master/app/src/main/java/com/example/android/popularmovies/api/Caller.java)
+- Add your API key to the String variable called API_KEY
+- Run the app
+
 ## Project Overview
 
 In this project, I’ll build an app to allow users to discover the most popular movies playing. The development of this app was divides into two parts:

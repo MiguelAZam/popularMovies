@@ -13,8 +13,8 @@ public class Caller {
     //Base url of Movies API
     private static String BASE_URL = "https://api.themoviedb.org/3/movie/";
     //API key to make calls
-    //TODO: Remove API_KEY
-    private static String API_KEY = "8fecd5432bfe0a9668cfc80766c9a1e7";
+    //TODO: Insert personal API_KEY
+    private static String API_KEY = "";
 
     //Set up retrofit
     private static MovieAPI buildCaller(){
